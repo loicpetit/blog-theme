@@ -1,3 +1,7 @@
-# Theme
+# Theme Name
 
-Hugo theme for the blog
+## Features
+
+## Installation
+
+## Configuration
