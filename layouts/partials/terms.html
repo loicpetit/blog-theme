@@ -3,17 +3,19 @@ For a given taxonomy, renders a list of terms assigned to the page.
 
 @context {page} page The current page.
 @context {string} taxonomy The taxonony.
+@context {string} label The block label.
 
 @example: {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+@example: {{ partial "terms.html" (dict "taxonomy" "tags" "page" . "label" "Authors") }}
 */}}
 
 {{- $page := .page }}
 {{- $taxonomy := .taxonomy }}
 
 {{- with $page.GetTerms $taxonomy }}
-  {{- $label := (index . 0).Parent.LinkTitle }}
-  <div>
-    <div>{{ $label }}:</div>
+  {{- $label := default (index . 0).Parent.LinkTitle $.label }}
+  <div class="taxonomy">
+    <div class="label">{{ $label }}:</div>
     <ul>
       {{- range . }}
         <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
