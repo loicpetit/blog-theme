@@ -1,8 +1,33 @@
-{{ define "main" }}
+{{- define "main" }}
   <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-    {{ .Summary }}
-  {{ end }}
-{{ end }}
+  {{- .Content }}
+  {{- range .Pages }}
+    <h2 class="list-title">
+      <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{- if eq "page" .Kind }}
+        <span class="date">{{ .Date.Format "2006-01-02" }}</span>
+      {{- end }}
+      {{- if eq "term" .Kind }}
+        {{- $taxo := index site.Taxonomies ($.Title | urlize)}}
+        <span class="count">({{ $taxo.Count (.Title | urlize) }})</span>
+      {{- end }}
+    </h2>
+    {{- if eq "page" .Kind }}
+      {{- $tags := .GetTerms "tags" }}
+      {{- $category := .GetTerms "categories" }}
+      {{- $serie := .GetTerms "series" }}
+      {{- $taxonomy := union $serie (union $category $tags) }}
+      {{- if ($taxonomy.Len | lt 0) }}
+        <p>
+          {{- range $taxonomy }}
+            - <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          {{- end }}
+          -
+        </p>
+      {{- end }}
+    {{- end }}
+    <p>
+      {{ .Summary }}
+    </p>    
+  {{- end }}
+{{- end }}
