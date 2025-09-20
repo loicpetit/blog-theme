@@ -8,8 +8,9 @@
         <span class="date">{{ .Date.Format "2006-01-02" }}</span>
       {{- end }}
       {{- if eq "term" .Kind }}
-        {{- $taxo := index site.Taxonomies ($.Title | urlize)}}
-        <span class="count">({{ $taxo.Count (.Title | urlize) }})</span>
+        {{- $taxoKey := (index  (where $.AllTranslations "Language.LanguageCode" "en") 0).Title | lower}}
+        {{- $taxo := index site.Taxonomies ($taxoKey)}}
+        <span class="count">({{ $taxo.Count (.LinkTitle | anchorize) }})</span>
       {{- end }}
     </h2>
     {{- if eq "page" .Kind }}

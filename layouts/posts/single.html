@@ -5,9 +5,19 @@
   {{ $dateHuman := .Date | time.Format ":date_long" }}
   <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
 
-  {{ partial "terms.html" (dict "taxonomy" "categories" "page" . "label" "Category") }}
-  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
-  {{ partial "terms.html" (dict "taxonomy" "series" "page" . "label" "Serie") }}
+  <div class="taxonomy-group">
+    {{ partial "terms.html" (dict "taxonomy" "categories" "page" .) }}
+    {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+    {{ partial "terms.html" (dict "taxonomy" "series" "page" .) }}
+  </div>
+
+  {{ if .IsTranslated }}
+  <div class="translations">
+    {{ range .Translations }}
+    <a href="{{ .Permalink }}">{{ .Language.Lang }}</a>
+    {{ end }}
+  </div>
+  {{ end }}
 
   {{ .Content }}
 {{ end }}

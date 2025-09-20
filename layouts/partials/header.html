@@ -1,2 +1,8 @@
+<div>
+    {{- range $.Site.Home.AllTranslations }}
+    <a href="{{ .RelPermalink }}">{{ .Language.Lang }}</a>
+    {{- end }}
+</div>
 <h1>{{ site.Title }}</h1>
+<p>{{ .Param "description" }}</p>
 {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
